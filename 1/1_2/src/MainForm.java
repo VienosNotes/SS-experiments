@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,26 +10,40 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class MainForm extends JFrame {
+
+    MyCanvas canvas = new MyCanvas();
     public MainForm() {
         super("My Painter");
 
         JPanel jp = new JPanel(new BorderLayout());
         getContentPane().add(jp);
 
-        MyCanvas canvas = new MyCanvas();
         jp.add(BorderLayout.CENTER, canvas);
         setSize(new Dimension(360, 240));
         setVisible(true);
+        canvas.draws.add(new MyRectangle.Builder(20, 40).size(40,40).fillColor(Color.RED).lineColor(Color.GREEN).build());
+        canvas.draws.add(new MyRectangle.Builder(120, 140).size(80,80).fillColor(Color.BLUE).lineColor(Color.ORANGE).build());
+        canvas.repaint();
     }
 
     public static void main(String[] argv) {
-        new MainForm();
+        MainForm mf = new MainForm();
     }
 }
 
 class MyCanvas extends JPanel {
+    public ArrayList<MyDrawing> draws = new ArrayList<MyDrawing>();
+
     public MyCanvas() {
         setBackground(Color.white);
     }
 
+    @Override public void paint(Graphics g) {
+        super.paint(g);
+        for(MyDrawing d : draws) {
+            System.out.println(d instanceof MyRectangle);
+            d.draw(g);
+            System.out.println(d.fillColor);
+        }
+    }
 }

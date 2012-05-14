@@ -8,16 +8,82 @@
 import java.awt.*;
 
 public class MyDrawing {
-    private int x, y, h, w;
-    private Color lineColor, fillColor;
-    private int lineWidth;
+    protected int x, y, h, w;
+    protected Color lineColor, fillColor;
+    protected int lineWidth;
 
-    public MyDrawing() {
-        x = y = 0;
-        w = h = 40;
-        lineColor = Color.black;
-        fillColor = Color.white;
-        lineWidth = 1;
+    public static class Builder {
+        private final int x;
+        private final int y;
+
+        private int w = 10, h = 10;
+        private Color line, fill;
+        private int lw;
+
+        public Builder(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public Builder size(int w, int h) {
+            this.w = w;
+            this.h = h;
+            return this;
+        }
+
+        public Builder lineColor(Color c) {
+            line = c;
+            return this;
+        }
+
+        public Builder fillColor(Color c) {
+            fill = c;
+            return this;
+        }
+
+        public Builder lineWidth(int i) {
+            lw = i;
+            return this;
+        }
+
+        public MyDrawing build() {
+            return new MyDrawing(this);
+        }
+    }
+
+    protected MyDrawing(Builder b) {
+        //MyDrawing md = new MyDrawing();
+        if (b.w > 0 && b.h > 0) {
+            this.x = b.x;
+            this.y = b.y;
+            this.w = b.w;
+            this.h = b.h;
+        } else {
+            this.w = 20;
+            this.h = 40;
+        }
+
+        if (b.line == null) {
+            this.lineColor = Color.BLACK;
+        } else {
+            this.lineColor = b.line;
+        }
+
+        if (b.fill == null) {
+            this.fillColor = Color.WHITE;
+        } else {
+            this.fillColor = b.fill;
+        }
+
+        if (b.lw == 0) {
+            this.lineWidth = 1;
+        } else {
+            this.lineWidth = b.lw;
+        }
+    }
+
+    protected MyDrawing() {
+
     }
 
     public void draw(Graphics g) {

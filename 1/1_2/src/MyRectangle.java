@@ -15,6 +15,18 @@ public class MyRectangle extends MyDrawing {
         this.setLocation(x, y);
     }
 
+    public static class Builder extends MyDrawing.Builder {
+        public Builder(int x, int y) {
+            super(x, y);
+        }
+
+        public MyRectangle build() {
+            return new MyRectangle(this);
+        }
+
+    }
+
+    @Override
     public void draw(Graphics g) {
         int x = getX();
         int y = getY();
@@ -33,10 +45,18 @@ public class MyRectangle extends MyDrawing {
         
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(this.getLineWidth()));
-        g2.setColor(this.getLineColor());
+        g2.setColor(this.getFillColor());
         g2.fillRect(x,y,w,h);
         g2.setColor(this.getLineColor());
         g2.drawRect(x,y,w,h);
     }
-    
+
+    @Override
+    public String toString() {
+        return "Rect:" + x + y + w + h;
+    }
+
+    protected MyRectangle(Builder b) {
+        super(b);
+    }
 }
