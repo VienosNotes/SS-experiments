@@ -11,9 +11,12 @@ import java.util.ArrayList;
  */
 public class MainForm extends JFrame {
 
+
     MyCanvas canvas = new MyCanvas();
+
     public MainForm() {
         super("My Painter");
+
 
         JPanel jp = new JPanel(new BorderLayout());
         getContentPane().add(jp);
@@ -21,9 +24,10 @@ public class MainForm extends JFrame {
         jp.add(BorderLayout.CENTER, canvas);
         setSize(new Dimension(360, 240));
         setVisible(true);
+
         canvas.draws.add(new MyRectangle.Builder(20, 40).size(40,40).fillColor(Color.RED).lineColor(Color.GREEN).build());
         canvas.draws.add(new MyRectangle.Builder(120, 140).size(80,80).fillColor(Color.BLUE).lineColor(Color.ORANGE).build());
-        canvas.repaint();
+        canvas.draws.add(new MyOval.Builder(20, 80).size(80,40).fillColor(Color.ORANGE).lineColor(Color.MAGENTA).lineWidth(5).build());
     }
 
     public static void main(String[] argv) {
@@ -32,6 +36,10 @@ public class MainForm extends JFrame {
 }
 
 class MyCanvas extends JPanel {
+
+    /**
+     * ArrayList that contains all shapes
+     */
     public ArrayList<MyDrawing> draws = new ArrayList<MyDrawing>();
 
     public MyCanvas() {
