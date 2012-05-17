@@ -20,10 +20,10 @@ public class MyRectangle extends MyDrawing {
             super(x, y);
         }
 
-        public MyRectangle build() {
+        @Override
+        public MyDrawing build() {
             return new MyRectangle(this);
         }
-
     }
 
     @Override
@@ -53,7 +53,7 @@ public class MyRectangle extends MyDrawing {
 
     @Override
     public String toString() {
-        return "Rect:" + x + y + w + h;
+        return "Rect:" + x + "," + y + "," + w + "," + h;
     }
 
     protected MyRectangle(Builder b) {

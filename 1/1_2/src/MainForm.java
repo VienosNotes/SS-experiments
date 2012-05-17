@@ -14,13 +14,15 @@ public class MainForm extends JFrame {
 
     MyCanvas canvas = new MyCanvas();
 
+
     public MainForm() {
         super("My Painter");
-
+        MotionListener listener = new MotionListener(this);
 
         JPanel jp = new JPanel(new BorderLayout());
         getContentPane().add(jp);
-
+        addMouseMotionListener(listener);
+        addMouseListener(listener);
         jp.add(BorderLayout.CENTER, canvas);
         setSize(new Dimension(360, 240));
         setVisible(true);
@@ -30,15 +32,16 @@ public class MainForm extends JFrame {
         canvas.draws.add(new MyOval.Builder(20, 80).size(80,40).fillColor(Color.ORANGE).lineColor(Color.MAGENTA).lineWidth(5).build());
     }
 
-    public static void main(String[] argv) {
+    public static void main (String[] args) {
         MainForm mf = new MainForm();
     }
+
 }
 
 class MyCanvas extends JPanel {
 
     /**
-     * ArrayList that contains all shapes
+     * ArrayList which contains all shapes
      */
     public ArrayList<MyDrawing> draws = new ArrayList<MyDrawing>();
 
@@ -49,9 +52,9 @@ class MyCanvas extends JPanel {
     @Override public void paint(Graphics g) {
         super.paint(g);
         for(MyDrawing d : draws) {
-            System.out.println(d instanceof MyRectangle);
+            //System.out.println(d instanceof MyRectangle);
             d.draw(g);
-            System.out.println(d.fillColor);
+            //System.out.println(d.fillColor);
         }
     }
 }

@@ -151,6 +151,17 @@
       </item>
     </group>
   </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="vieno">
+      <words>
+        <w>argv</w>
+        <w>heptangle</w>
+        <w>intelli</w>
+        <w>vert</w>
+        <w>vieno</w>
+      </words>
+    </dictionary>
+  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/1_2.iml" filepath="$PROJECT_DIR$/1_2.iml" />

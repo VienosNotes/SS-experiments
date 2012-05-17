@@ -24,7 +24,7 @@ public abstract class MyDrawing {
         private final int x;
         private final int y;
 
-        private int w = 10, h = 10;
+        private int w, h;
         private Color line, fill;
         private int lw;
 
