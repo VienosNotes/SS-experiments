@@ -21,6 +21,7 @@ public class MotionListener extends MouseAdapter implements MouseMotionListener 
 
     @Override
     public void mousePressed(MouseEvent e) {
+        System.out.println(e);
         current = new MyOval.Builder(e.getX(),e.getY()).size(1,1).build();
         mf.canvas.draws.add(current);
         System.out.println(e.getX() + "," + e.getY() + "," + " at pressed");
