@@ -25,7 +25,7 @@ public class MyOval extends MyDrawing {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void drawShape(Graphics g) {
         int x = getX();
         int y = getY();
         int w = getW();
@@ -56,5 +56,11 @@ public class MyOval extends MyDrawing {
 
     protected MyOval(Builder b) {
         super(b);
+    }
+
+    @Override
+    public MyOval clone() {
+        MyOval c = (MyOval) new Builder(x,y).size(w,h).fillColor(fillColor).lineColor(lineColor).lineWidth(lineWidth).build();
+        return c;
     }
 }

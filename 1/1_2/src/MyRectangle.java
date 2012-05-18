@@ -27,7 +27,7 @@ public class MyRectangle extends MyDrawing {
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void drawShape(Graphics g) {
         int x = getX();
         int y = getY();
         int w = getW();
@@ -58,5 +58,11 @@ public class MyRectangle extends MyDrawing {
 
     protected MyRectangle(Builder b) {
         super(b);
+    }
+
+    @Override
+    public MyRectangle clone() {
+        MyRectangle c = (MyRectangle) new Builder(x,y).size(w,h).fillColor(fillColor).lineColor(lineColor).lineWidth(lineWidth).build();
+        return c;
     }
 }

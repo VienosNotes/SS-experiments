@@ -14,19 +14,21 @@ public abstract class MyDrawing {
     protected int x, y, h, w;
     protected Color lineColor, fillColor;
     protected int lineWidth;
+    protected boolean shadow = false;
 
     /**
      * Builder for SomeShape extends MyDrawing
      * usage:
      *   SomeShape s = new SomeShape.Builder(x, y).someSettingFoo(20).someSettingBar(Color.RED).build();
      */
-    public abstract static class Builder {
-        private final int x;
-        private final int y;
+    public static abstract class Builder {
+        protected final int x;
+        protected final int y;
 
-        private int w, h;
-        private Color line, fill;
-        private int lw;
+        protected int w, h;
+        protected Color line, fill;
+        protected int lw;
+        protected boolean shadow;
 
         /**
          * Make Builder object for building some instance extends MyDrawing
@@ -80,7 +82,14 @@ public abstract class MyDrawing {
             return this;
         }
 
+        public Builder shadow(boolean shadow) {
+            this.shadow = shadow;
+            return this;
+        }
+
         public abstract MyDrawing build();
+
+
     }
 
     /**
@@ -89,14 +98,10 @@ public abstract class MyDrawing {
      */
     protected MyDrawing(Builder b) {
 
-        if (b.w > 0 && b.h > 0) {
-            this.x = b.x;
-            this.y = b.y;
-            this.w = b.w;
-            this.h = b.h;
-        } else {
-           throw new IllegalArgumentException("something is wrong with size");
-        }
+        this.x = b.x;
+        this.y = b.y;
+        this.w = b.w;
+        this.h = b.h;
 
         if (b.line == null) {
             this.lineColor = Color.BLACK;
@@ -111,10 +116,12 @@ public abstract class MyDrawing {
         }
 
         if (b.lw == 0) {
-            this.lineWidth = 1;
+            this.lineWidth = 2;
         } else {
             this.lineWidth = b.lw;
         }
+
+        this.shadow = b.shadow;
     }
 
     protected MyDrawing() { /* do nothing */ }
@@ -122,9 +129,25 @@ public abstract class MyDrawing {
     /**
      * Draw this shape on the Display
      * @param g target Graphic object to draw
-     */
-    public abstract void draw(Graphics g);
+     **/
+    public void draw(Graphics g) {
+        if (shadow) {
+            drawWithShadow(g);
+        } else {
+            drawShape(g);
+        }
+    }
 
+    public abstract void drawShape(Graphics g);
+
+    public void drawWithShadow(Graphics g) {
+        MyDrawing shadow = this.clone();
+        shadow.setFillColor(Color.BLACK);
+        shadow.setLineColor(Color.BLACK);
+        shadow.move(10, 10);
+        shadow.drawShape(g);
+        this.drawShape(g);
+    }
     /**
      * Move shape with difference
      * @param dx horizontal difference to move
@@ -226,4 +249,7 @@ public abstract class MyDrawing {
     public void setLineWidth(int lineWidth) {
         this.lineWidth = lineWidth;
     }
+
+    @Override
+    public abstract MyDrawing clone();
 }

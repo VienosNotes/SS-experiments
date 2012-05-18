@@ -1,7 +1,6 @@
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,20 +9,20 @@ import java.awt.event.MouseMotionListener;
  * Time: 18:23
  * To change this template use File | Settings | File Templates.
  */
-public class MotionListener extends MouseAdapter implements MouseMotionListener {
+public class MotionListener extends MouseAdapter implements MouseMotionListener, ActionListener{
 
-    private final MainForm mf;
-    private MyDrawing current;
+    protected final MainForm mf;
+    protected MyDrawing current;
+    protected Boolean shadow;
 
     public MotionListener(MainForm mf) {
         this.mf = mf;
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         System.out.println(e);
-        current = new MyOval.Builder(e.getX(),e.getY()).size(1,1).build();
-        mf.canvas.draws.add(current);
         System.out.println(e.getX() + "," + e.getY() + "," + " at pressed");
         mf.canvas.repaint();
     }
@@ -34,12 +33,17 @@ public class MotionListener extends MouseAdapter implements MouseMotionListener 
             current.setSize(-current.getX() + e.getX(),  -current.getY() + e.getY());
             System.out.println(e.getX() + "," + e.getY() + "," + " at dragged");
         } catch(Exception ex) {
-            System.out.println(current.toString() + ex + " at Dtagged");
+            System.out.println(current.toString() + ex + " at Dragged");
         }
         mf.canvas.repaint();
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
+    public void actionPerformed(ActionEvent actionEvent) {
+        mf.canvas.removeMouseListener(mf.canvas.getMouseListeners()[0]);
+        mf.canvas.removeMouseMotionListener(mf.canvas.getMouseMotionListeners()[0]);
+        mf.canvas.addMouseListener(this);
+        mf.canvas.addMouseMotionListener(this);
     }
+
 }
