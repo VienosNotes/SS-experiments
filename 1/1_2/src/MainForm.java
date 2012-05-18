@@ -24,30 +24,22 @@ public class MainForm extends JFrame {
 
         getContentPane().add(jp);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout());
+        canvas.addMouseMotionListener(listener);
+        canvas.addMouseListener(listener);
 
+        JPanel buttonPanel = new JPanel(new FlowLayout());
         Button rectButton = new Button("Rectangle");
         buttonPanel.add(rectButton);
 
-        Button ovalButton = new Button("Oval");
-        buttonPanel.add(ovalButton);
-
-        Button triangleButton = new Button("Triangle");
-        buttonPanel.add(triangleButton);
-
         JPanel checkPanel = new JPanel(new FlowLayout());
-        Checkbox shadowCheck = new Checkbox("Shadow");
-        checkPanel.add(shadowCheck);
+        Checkbox shadow = new Checkbox("Shadow");
+        checkPanel.add(shadow);
 
-        canvas.addMouseMotionListener(listener);
-        canvas.addMouseListener(listener);
-        jp.add(BorderLayout.CENTER, canvas);
         jp.add(BorderLayout.NORTH, buttonPanel);
+        jp.add(BorderLayout.CENTER, canvas);
         jp.add(BorderLayout.SOUTH, checkPanel);
-        setSize(new Dimension(360, 240));
+        setSize(new Dimension(480, 360));
         setVisible(true);
-
-
 
         canvas.draws.add(new MyRectangle.Builder(0, 0).size(40,40).fillColor(Color.RED).lineColor(Color.GREEN).build());
         canvas.draws.add(new MyRectangle.Builder(120, 140).size(80,80).fillColor(Color.BLUE).lineColor(Color.ORANGE).build());
