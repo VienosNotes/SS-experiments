@@ -45,8 +45,8 @@ public class RegPolygon extends Polygon implements ResizableShape {
         int[] initX = new int[vertex];
         int[] initY = new int[vertex];
         for (int i = 0; i < vertex; ++i){
-            initX[0] = x;
-            initY[0] = y;
+            initX[i] = x;
+            initY[i] = y;
         }
 
         this.xpoints = initX;
