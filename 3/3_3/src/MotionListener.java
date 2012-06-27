@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 public class MotionListener extends MouseAdapter implements MouseMotionListener, ActionListener{
 
     protected final MainForm mf;
-    protected MyDrawing current;
+    protected ResizableShape current;
     protected Boolean shadow;
 
     public MotionListener(MainForm mf) {
@@ -28,9 +28,10 @@ public class MotionListener extends MouseAdapter implements MouseMotionListener,
     @Override
     public void mouseDragged(MouseEvent e) {
         try {
-            current.setSize(-current.getX() + e.getX(),  -current.getY() + e.getY());
+            current.setSize((int)-current.getX() + e.getX(),  (int)-current.getY() + e.getY());
         } catch(Exception ex) {
-            System.out.println(current.toString() + ex + " with Dragged");
+//            System.out.println(current.toString() + ex + " with Dragged");
+            System.out.println("something is wrong");
         }
         mf.canvas.repaint();
     }

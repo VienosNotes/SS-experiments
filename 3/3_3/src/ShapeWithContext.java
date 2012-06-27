@@ -8,15 +8,15 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class ShapeWithContext {
-    private Shape shape;
+    public ResizableShape shape;
     private boolean withShade;
-    private Context ctx;
+    private Context ctx = new Context();
     private boolean selected;
 
     public class Context {
-        private Stroke st;
+        private Stroke st = new BasicStroke();
         private Color lineColor = Color.BLACK;
-        private Color fillColor = Color.BLACK;
+        private Color fillColor = Color.WHITE;
         private int lineWidth = 1;
 
         public Stroke getStroke() {
@@ -56,11 +56,15 @@ public class ShapeWithContext {
         }
     }
 
-    public Shape getShape() {
+    public ShapeWithContext (ResizableShape s) {
+        this.shape = s;
+    }
+
+    public ResizableShape getShape() {
         return shape;
     }
 
-    public void setShape(Shape shape) {
+    public void setShape(ResizableShape shape) {
         this.shape = shape;
     }
 

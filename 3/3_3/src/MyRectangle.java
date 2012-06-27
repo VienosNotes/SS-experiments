@@ -9,12 +9,18 @@ import java.awt.*;
  * Time: 21:30
  * To change this template use File | Settings | File Templates.
  */
-public class MyRectangle extends MyDrawing {
+public class MyRectangle extends Rectangle implements ResizableShape {
     public MyRectangle(int x, int y){
-        super();
-        this.setLocation(x, y);
+        super(x, y, 0, 0);
+        System.out.println("called");
     }
 
+    public void setSize(int w, int h) {
+        this.setBounds((int)this.getX(), (int)this.getY(), w, h);
+        System.out.println("called");
+    }
+
+    /*
     public static class Builder extends MyDrawing.Builder {
         public Builder(int x, int y) {
             super(x, y);
@@ -25,7 +31,9 @@ public class MyRectangle extends MyDrawing {
             return new MyRectangle(this);
         }
     }
+    */
 
+    /*
     @Override
     public void drawShape(Graphics g) {
         int x = getX();
@@ -50,19 +58,25 @@ public class MyRectangle extends MyDrawing {
         g2.setColor(this.getLineColor());
         g2.drawRect(x,y,w,h);
     }
+    */
 
+    /*
     @Override
     public String toString() {
         return "Rect:" + x + "," + y + "," + w + "," + h;
     }
+    */
 
+    /*
     protected MyRectangle(Builder b) {
         super(b);
     }
-
+*/
+    /*
     @Override
     public MyRectangle clone() {
         MyRectangle c = (MyRectangle) new Builder(x,y).size(w,h).fillColor(fillColor).lineColor(lineColor).lineWidth(lineWidth).build();
         return c;
     }
+    */
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class Mediator {
-    private ArrayList<ShapeWithContext> shapes = new ArrayList<ShapeWithContext>();
+    public ArrayList<ShapeWithContext> shapes = new ArrayList<ShapeWithContext>();
     private Stroke st;
     private Color c;
     private ShapeWithContext selected;
