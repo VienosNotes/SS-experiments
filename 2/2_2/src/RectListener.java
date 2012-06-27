@@ -17,7 +17,7 @@ public class RectListener extends MotionListener implements ActionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        current = new MyRectangle.Builder(e.getX(), e.getY()).shadow(false).size(1, 1).build();
+        current = new MyRectangle.Builder(e.getX(), e.getY()).shadow(mf.shadow.getState()).size(1, 1).build();
         mf.canvas.draws.add(current);
     }
 

@@ -19,10 +19,7 @@ public class PolyListener extends MotionListener implements ActionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        current = new MyRegPolygon.Builder(e.getX(), e.getY()).vertex(7).shadow(mf.shadow.getState()).size(1, 1).build();
+        current = new MyRegPolygon.Builder(e.getX(), e.getY()).vertex(7).shadow(false).size(1, 1).build();
         mf.canvas.draws.add(current);
     }
-
-
-
-    }
+}

@@ -16,7 +16,7 @@ public class OvalListener extends MotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        current = new MyOval.Builder(e.getX(), e.getY()).shadow(false).size(1, 1).build();
+        current = new MyOval.Builder(e.getX(), e.getY()).shadow(mf.shadow.getState()).size(1, 1).build();
         mf.canvas.draws.add(current);
     }
 }

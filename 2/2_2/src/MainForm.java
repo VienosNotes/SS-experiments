@@ -12,22 +12,47 @@ import java.util.ArrayList;
 public class MainForm extends JFrame {
 
     public MyCanvas canvas = new MyCanvas(this);
+    public Checkbox shadow;
 
     public MainForm() {
         super("My Painter");
+        MotionListener listener = new RectListener(this);
 
         JPanel jp = new JPanel(new BorderLayout());
 
         getContentPane().add(jp);
 
+        canvas.addMouseMotionListener(listener);
+        canvas.addMouseListener(listener);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        Button rectButton = new Button("Rectangle");
+        rectButton.addActionListener(new RectListener(this));
+        buttonPanel.add(rectButton);
+
+        Button ovalButton = new Button("Oval");
+        ovalButton.addActionListener(new OvalListener(this));
+        buttonPanel.add(ovalButton);
+
+        Button heptButton = new Button("Hept");
+        heptButton.addActionListener(new PolyListener(this, 7));
+        buttonPanel.add(heptButton);
+
+        Button decaButton = new Button("Deca");
+        decaButton.addActionListener(new PolyListener(this, 10));
+        buttonPanel.add(decaButton);
+
+        JPanel checkPanel = new JPanel(new FlowLayout());
+        shadow = new Checkbox("shadow");
+        checkPanel.add(shadow);
+        shadow.setVisible(true);
+
+        jp.add(BorderLayout.NORTH, buttonPanel);
         jp.add(BorderLayout.CENTER, canvas);
+        jp.add(BorderLayout.SOUTH, checkPanel);
         setSize(new Dimension(480, 360));
         setVisible(true);
         this.repaint();
-        canvas.draws.add(new MyRegPolygon.Builder(200, 200).vertex(7).size(40, 40).build());
-        canvas.draws.add(new MyRectangle.Builder(0, 0).size(40,40).fillColor(Color.RED).lineColor(Color.GREEN).build());
-        canvas.draws.add(new MyOval.Builder(20, 80).size(80,40).fillColor(Color.ORANGE).lineColor(Color.MAGENTA).lineWidth(5).build());
-        canvas.draws.add(new MyRegPolygon.Builder(300, 100).vertex(10).size(160,160).build());
     }
 
     public static void main (String[] args) {

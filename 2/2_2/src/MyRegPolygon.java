@@ -45,10 +45,6 @@ public class MyRegPolygon extends MyDrawing {
         this.vertex = vertex;
     }
 
-    /**
-     * Draw this shape
-     * @param g Graphics object
-     */
     @Override
     public void drawShape(Graphics g) {
         int[] vert_x = new int[vertex];
@@ -68,10 +64,6 @@ public class MyRegPolygon extends MyDrawing {
 
     }
 
-    /**
-     * clone this object
-     * @return new instance cloned from this
-     */
     @Override
     public MyRegPolygon clone() {
         MyRegPolygon c = (MyRegPolygon) new Builder(x,y).vertex(vertex).size(w,h).fillColor(fillColor).lineColor(lineColor).lineWidth(lineWidth).build();

@@ -1,0 +1,440 @@
+\documentclass[a4paper,8pt]{jreport}
+\usepackage{url}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{epsfig}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{times}
+\usepackage{ascmac}
+%\usepackage{here}
+%\usepackage{txfonts}
+\usepackage{listings}
+
+\renewcommand{\lstlistingname}{リスト}
+\lstset{language=Java,
+  basicstyle=\ttfamily\scriptsize,
+  commentstyle=\textit,
+  classoffset=1,
+  keywordstyle=\bfseries,
+  frame=tRBl,
+  framesep=5pt,
+  showstringspaces=false,
+  numbers=left,
+  stepnumber=1,
+  numberstyle=\tiny,
+  tabsize=2,
+  breaklines=true,
+}
+
+\setlength{\oddsidemargin}{-.2in}
+\setlength{\evensidemargin}{-.2in}
+\setlength{\topmargin}{-4em}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{10in}
+\setlength{\parskip}{0em}
+\setlength{\topsep}{0em}
+\setlength{\columnsep}{3zw}
+
+\title{JavaによるGUIの記述}
+\author{200911434 青木大祐\\
+メールアドレス： s0911434@coins.tsukuba.ac.jp}
+
+\date{提出期限 2012年5月18日\\
+提出日 2012年5月18日}
+
+\begin{document}
+\maketitle
+\newpage
+
+\chapter{課題1}
+\section{クラスとインスタンスの意味}
+\subsection{クラス}
+クラスとは、あるデータについての属性と手続きを纏めたものである。これにより
+データとそれに関する操作が集約され、データ同士の関連性が明確になる。クラ
+スはデータの設計図とも言える。
+
+\subsection{インスタンス}
+設計図であるクラスから実際に生成したデータ。
+
+\section{図形の描画}
+\subsection{楕円、七角形、独自の図形（十角形）}
+以下のようにMyDrawing抽象クラスを実装し、これを元に各図形の実装を行った。
+インスタンスの生成はBuilderパターンを用いることでコードの見通しの良いコー
+ドを記述できるように努めた。細かいメソッドなどについてはソースコード中の
+javadocを参照のこと。
+\begin{lstlisting}
+/**
+ * Abstract class for Shapes
+ */
+public abstract class MyDrawing {
+    protected int x, y, h, w;
+    protected Color lineColor, fillColor;
+    protected int lineWidth;
+    protected boolean shadow = false;
+
+    /**
+     * Builder for SomeShape extends MyDrawing
+     * usage:
+     *   SomeShape s = new SomeShape.Builder(x, y).someSettingFoo(20).someSettingBar(Color.RED).build();
+     */
+    public static abstract class Builder {
+        protected final int x;
+        protected final int y;
+
+        protected int w, h;
+        protected Color line, fill;
+        protected int lw;
+        protected boolean shadow;
+
+        /**
+         * Make Builder object for building some instance extends MyDrawing
+         * @param x horizontal position of the upper-left of this layer
+         * @param y vertical position of the upper-left of this layer
+         */
+        public Builder(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        /**
+         * Set layer size with this Builder object
+         * @param w width of this layer
+         * @param h height of this layer
+         * @return this own Builder object which size was set
+         */
+        public Builder size(int w, int h) {
+            this.w = w;
+            this.h = h;
+            return this;
+        }
+
+        /**
+         * Set the edge color of this shape
+         * @param c edge color of this shape
+         * @return this own Builder object which color was set
+         */
+        public Builder lineColor(Color c) {
+            line = c;
+            return this;
+        }
+
+        /**
+         * Set the area color of this shape
+         * @param c area color of this shape
+         * @return this own Builder object which color was set
+         */
+        public Builder fillColor(Color c) {
+            fill = c;
+            return this;
+        }
+
+        /**
+         * Set the width of edge of this shape
+         * @param i width of edge
+         * @return this own Builder object which width of edge set
+         */
+        public Builder lineWidth(int i) {
+            lw = i;
+            return this;
+        }
+
+        public Builder shadow(boolean shadow) {
+            this.shadow = shadow;
+            return this;
+        }
+
+        public abstract MyDrawing build();
+
+
+    }
+
+    /**
+     * Make some instance extends MyDrawing with Builder pattern
+     * @param b Builder object with settings of shape
+     */
+    protected MyDrawing(Builder b) {
+
+        this.x = b.x;
+        this.y = b.y;
+        this.w = b.w;
+        this.h = b.h;
+
+        if (b.line == null) {
+            this.lineColor = Color.BLACK;
+        } else {
+            this.lineColor = b.line;
+        }
+
+        if (b.fill == null) {
+            this.fillColor = Color.WHITE;
+        } else {
+            this.fillColor = b.fill;
+        }
+
+        if (b.lw == 0) {
+            this.lineWidth = 2;
+        } else {
+            this.lineWidth = b.lw;
+        }
+
+        this.shadow = b.shadow;
+    }
+
+    protected MyDrawing() { /* do nothing */ }
+
+    /**
+     * Draw this shape on the Display
+     * @param g target Graphic object to draw
+     **/
+    public void draw(Graphics g) {
+        if (shadow) {
+            drawWithShadow(g);
+        } else {
+            drawShape(g);
+        }
+    }
+
+    /* 省略 */
+}
+\end{lstlisting}
+これを継承して任意の正多角形を描画するクラスを実装した。ソースコードは以
+下の通り。Builderのvertexメソッドに頂点の数を指定して生成する。
+\begin{lstlisting}
+ public class MyRegPolygon extends MyDrawing {
+
+    /**
+     * number of vertex
+     */
+    private int vertex;
+
+    public static class Builder extends MyDrawing.Builder {
+        private int vertex;
+        public Builder(int x, int y) {
+            super(x, y);
+        }
+
+        public MyRegPolygon build() {
+            return new MyRegPolygon(this);
+        }
+
+        public Builder vertex(int v) {
+            this.vertex = v;
+            return this;
+        }
+    }
+
+    public MyRegPolygon(Builder b) {
+        super(b);
+        this.vertex = b.vertex;
+    }
+
+    /**
+     * regular constructor
+     * @param vertex number of vertex
+     */
+    public MyRegPolygon(int vertex) {
+        this.vertex = vertex;
+    }
+
+    /**
+     * Draw this shape
+     * @param g Graphics object
+     */
+    @Override
+    public void drawShape(Graphics g) {
+        int[] vert_x = new int[vertex];
+        int[] vert_y = new int[vertex];
+
+        for (int i = 0; i < vertex; ++i) {
+            vert_x[i] = (int) ((x + w/2) + ((double)(h/2) * Math.cos(((double)2 * Math.PI) * i / (double)(vertex))));
+            vert_y[i] = (int) ((y + h/2) + ((double)(h/2) * Math.sin(((double)2 * Math.PI) * i / (double)(vertex))));
+        }
+
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(this.getLineWidth()));
+        g2.setColor(lineColor);
+        g2.drawPolygon(vert_x, vert_y, vertex);
+        g2.setColor(fillColor);
+        g2.fillPolygon(vert_x, vert_y, vertex);
+
+    }
+
+    /**
+     * clone this object
+     * @return new instance cloned from this
+     */
+    @Override
+    public MyRegPolygon clone() {
+        MyRegPolygon c = (MyRegPolygon) new Builder(x,y).vertex(vertex).size(w,h).fillColor(fillColor).lineColor(lineColor).lineWidth(lineWidth).build();
+        return c;
+    }
+}
+\end{lstlisting}
+実行部分のソースコードは以下の通り。
+\begin{lstlisting}
+ public class MainForm extends JFrame {
+
+    public MyCanvas canvas = new MyCanvas(this);
+
+    public MainForm() {
+        super("My Painter");
+
+        JPanel jp = new JPanel(new BorderLayout());
+
+        getContentPane().add(jp);
+
+        jp.add(BorderLayout.CENTER, canvas);
+        setSize(new Dimension(480, 360));
+        setVisible(true);
+        this.repaint();
+        canvas.draws.add(new MyRegPolygon.Builder(200, 200).vertex(7).size(40, 40).build());
+        canvas.draws.add(new MyRectangle.Builder(0, 0).size(40,40).fillColor(Color.RED).lineColor(Color.GREEN).build());
+        canvas.draws.add(new MyOval.Builder(20, 80).size(80,40).fillColor(Color.ORANGE).lineColor(Color.MAGENTA).lineWidth(5).build());
+        canvas.draws.add(new MyRegPolygon.Builder(300, 100).vertex(10).size(160,160).build());
+    }
+
+    public static void main (String[] args) {
+        MainForm mf = new MainForm();
+    }
+
+}
+
+class MyCanvas extends JPanel {
+
+    /**
+     * ArrayList which contains all shapes
+     */
+    public ArrayList<MyDrawing> draws = new ArrayList<MyDrawing>();
+    private final MainForm mf;
+
+    public MyCanvas(MainForm mf) {
+        setBackground(Color.white);
+        this.mf = mf;
+    }
+
+    @Override public void paint(Graphics g) {
+        super.paint(g);
+        for(MyDrawing d : draws) {
+            d.draw(g);
+            repaint();
+        }
+    }
+}
+\end{lstlisting}
+
+実行結果のスクリーンショットを以下に示す。
+\vspace*{2zh}
+\begin{center}
+\includegraphics[width=320,height=240]{1-2.png} 
+\end{center}
+
+
+\chapter{課題2}
+\section{クリックした位置に画像を描画}
+\section{マウスドラッグによる描画}
+MouseListenerとMouseMotionListenerを用いてマウスの状態を取得し、ポインタ
+の位置に追従するように伸縮する描画の実装を行った。具体的な各図形は、
+MotionListenerクラスを継承して実装されている。MoitonListenerクラスの実装
+を以下に示す。
+\begin{lstlisting}
+ public class MotionListener extends MouseAdapter implements MouseMotionListener, ActionListener{
+
+    protected final MainForm mf;
+    protected MyDrawing current;
+    protected Boolean shadow;
+
+    public MotionListener(MainForm mf) {
+        this.mf = mf;
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        mf.canvas.repaint();
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        try {
+            current.setSize(-current.getX() + e.getX(),  -current.getY() + e.getY());
+
+        } catch(Exception ex) {
+            System.out.println(current.toString() + ex + " at Dragged");
+        }
+        mf.canvas.repaint();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        mf.canvas.removeMouseListener(mf.canvas.getMouseListeners()[0]);
+        mf.canvas.removeMouseMotionListener(mf.canvas.getMouseMotionListeners()[0]);
+        mf.canvas.addMouseListener(this);
+        mf.canvas.addMouseMotionListener(this);
+    }
+
+}
+\end{lstlisting}
+このクラスはButtonに対するActionListenerの役割も備えており、設定されたボ
+タンが押下されるとcanvasのMouseListener、MouseMotionListenerを適切に設
+定する。
+これを用いて実装したPolyListenerクラスのソースコードを以下に示す。
+\begin{lstlisting}
+public class PolyListener extends MotionListener implements ActionListener {
+    private final int vertex;
+    public PolyListener(MainForm mf, int vertex) {
+        super(mf);
+        this.vertex = vertex;
+    }
+
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        current = new MyRegPolygon.Builder(e.getX(), e.getY()).vertex(7).shadow(false).size(1, 1).build();
+        mf.canvas.draws.add(current);
+    }
+}
+\end{lstlisting}
+\section{影の描画}
+CheckBoxの状態によって影を描画する機能を実装した。マウスのボタンが押下さ
+れ、Builderがインスタンスを生成する際にshadowを設定する。CheckBoxにチェッ
+クが入っている場合はdrawWithShadowが、入っていない場合はdrawShapeがdraw
+メソッド内で実行され、それぞれの図形が描画される。ソースコードは以下の通
+り。
+\begin{lstlisting}
+ public void draw(Graphics g) {
+        if (shadow) {
+            drawWithShadow(g);
+        } else {
+            drawShape(g);
+        }
+    }
+
+    public abstract void drawShape(Graphics g);
+
+    public void drawWithShadow(Graphics g) {
+        MyDrawing shadow = this.clone();
+        shadow.setFillColor(Color.BLACK);
+        shadow.setLineColor(Color.BLACK);
+        shadow.move(10, 10);
+        shadow.drawShape(g);
+        this.drawShape(g);
+    }
+\end{lstlisting}
+drawWithShadowメソッドはMyDrawingクラス側に実装されているため、継承した
+クラスであれば独自に再実装することなく影の機能が利用できる。
+
+実行例のスクリーンショットを以下に示す。ウィンドウ上部のボタンで描画する
+図形を選択し、下部のチェックボックスで影の有無を指定する。
+\vspace*{2zh}
+\begin{center}
+\includegraphics[width=320,height=240]{2.png} 
+\end{center}
+\chapter{感想}
+それなりに大きなプログラムをJavaで記述するのは初めてだったが、Javaの良さ
+に触れられたと思う。今までJavaは保守的で（かつ悪い意味で）固い言語だと思っ
+ていたが、実際に触ってみると柔軟な記述が可能であり、今までの思い込みは間
+違っていたのだと感じた。特にジェネリクスの型パラメータやリフレクションを
+用いたメタプログラミングの技法など、（今回は使わなかったが）いろいろ勉強
+になったと思う。
+
+\end{document}
