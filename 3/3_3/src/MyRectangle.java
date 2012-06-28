@@ -10,73 +10,40 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class MyRectangle extends Rectangle implements ResizableShape {
+    public final int originX;
+    public final int originY;
+
     public MyRectangle(int x, int y){
         super(x, y, 0, 0);
+        originX = x;
+        originY = y;
         System.out.println("called");
     }
 
     public void setSize(int w, int h) {
-        this.setBounds((int)this.getX(), (int)this.getY(), w, h);
-        System.out.println("called");
-    }
-
-    /*
-    public static class Builder extends MyDrawing.Builder {
-        public Builder(int x, int y) {
-            super(x, y);
-        }
-
-        @Override
-        public MyDrawing build() {
-            return new MyRectangle(this);
+        System.out.printf("%d,%d%n", w, h);
+        if (w >= 0 && h >= 0) {
+            this.setBounds((int)this.getX(), (int)this.getY(), w, h);
+        } else if (w < 0 && h > 0) {
+            this.setBounds(this.getOriginX() + w, this.getOriginY(), -w, h);
+        } else if (w > 0 && h < 0) {
+            this.setBounds((int)this.getX(), this.getOriginY() + h, w, -h);
+        } else {
+            this.setBounds(this.getOriginX() + w, this.getOriginY() + h, -w, -h);
         }
     }
-    */
 
-    /*
     @Override
-    public void drawShape(Graphics g) {
-        int x = getX();
-        int y = getY();
-        int w = getW();
-        int h = getH();
+    public void setPosition(int x, int y) {
+        this.x += x;
+        this.y += y;
+    }
 
-        if (w < 0) {
-            x += w;
-            w *= -1;
-        }
-        
-        if (h < 0) {
-            y += h;
-            h *= -1;
-        }
-        
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(this.getLineWidth()));
-        g2.setColor(this.getFillColor());
-        g2.fillRect(x,y,w,h);
-        g2.setColor(this.getLineColor());
-        g2.drawRect(x,y,w,h);
+    public int getOriginX() {
+        return originX;
     }
-    */
-
-    /*
-    @Override
-    public String toString() {
-        return "Rect:" + x + "," + y + "," + w + "," + h;
+    
+    public int getOriginY() {
+        return originY;
     }
-    */
-
-    /*
-    protected MyRectangle(Builder b) {
-        super(b);
-    }
-*/
-    /*
-    @Override
-    public MyRectangle clone() {
-        MyRectangle c = (MyRectangle) new Builder(x,y).size(w,h).fillColor(fillColor).lineColor(lineColor).lineWidth(lineWidth).build();
-        return c;
-    }
-    */
 }

@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 
 /**
  * Created with IntelliJ IDEA.
@@ -90,6 +91,21 @@ public class ShapeWithContext {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+    
+    public ResizableShape shapeClone(){
+        if (this.shape instanceof MyRectangle) {
+            MyRectangle s = (MyRectangle)this.shape;
+            return (ResizableShape) s.clone();
+        } else if (this.shape instanceof MyOval) {
+            MyOval s = (MyOval)this.shape;
+            return (ResizableShape) s.clone();
+        } else if (this.shape instanceof RegPolygon) {
+            RegPolygon s = (RegPolygon)this.shape;
+            return (ResizableShape)s.clone();
+        } else {
+            return null;
+        }
     }
 
 }

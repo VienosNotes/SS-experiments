@@ -67,7 +67,6 @@ class MyCanvas extends JPanel {
      * ArrayList which contains all shapes
      */
     public Mediator med = new Mediator();
-    public ArrayList<MyDrawing> draws = new ArrayList<MyDrawing>();
     private final MainForm mf;
 
     public MyCanvas(MainForm mf) {
@@ -77,21 +76,6 @@ class MyCanvas extends JPanel {
 
     @Override public void paint(Graphics g) {
         super.paint(g);
-
-        Graphics2D g2 = (Graphics2D) g;
-
-        for(ShapeWithContext d : med.shapes) {
-            ShapeWithContext.Context ctx = d.getCtx();
-            if (ctx == null) {
-                System.out.println("ctx is null!");
-                return;
-            }
-            g2.setColor(ctx.getFillColor());
-            g2.fill(d.shape);
-            g2.setColor(ctx.getLineColor());
-            g2.setStroke(ctx.getStroke());
-            g2.draw(d.shape);
-            repaint();
-        }
+        med.drawAll(g);
     }
 }

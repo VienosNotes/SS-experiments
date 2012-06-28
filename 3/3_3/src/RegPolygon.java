@@ -9,31 +9,10 @@ import java.awt.*;
  *
  * Class for drawing regular-polygon
  */
-public class RegPolygon extends Polygon implements ResizableShape {
+public class RegPolygon extends Polygon implements ResizableShape, Cloneable {
 
-
-    /**
-     * number of vertex
-     */
-    //private int vertex;
-
-    /*
-    public static class Builder extends MyDrawing.Builder {
-        private int vertex;
-        public Builder(int x, int y) {
-            super(x, y);
-        }
-
-        public RegPolygon build() {
-            return new RegPolygon(this);
-        }
-
-        public Builder vertex(int v) {
-            this.vertex = v;
-            return this;
-        }
-    }
-    */
+    private final int originX;
+    private final int originY;
 
     /**
      * regular constructor
@@ -41,6 +20,9 @@ public class RegPolygon extends Polygon implements ResizableShape {
      */
     public RegPolygon(int x, int y, int vertex) {
         super();
+        originX = x;
+        originY = y;
+        
         this.npoints = vertex;
         int[] initX = new int[vertex];
         int[] initY = new int[vertex];
@@ -56,8 +38,9 @@ public class RegPolygon extends Polygon implements ResizableShape {
     public void setSize (int w, int h) {
 
         Rectangle bound = this.getBounds();
-        int x = bound.x;
-        int y = bound.y;
+
+        int x = (int)bound.getX();
+        int y = (int)bound.getY();
 
         int[] vert_x = new int[npoints];
         int[] vert_y = new int[npoints];
@@ -78,4 +61,35 @@ public class RegPolygon extends Polygon implements ResizableShape {
     public double getY() {
         return this.getBounds().y;
     }
+    
+    public int getOriginX() {
+        return (int)getX();
+    }
+
+    public int getOriginY() {
+        return (int)getY();
+    }
+
+    @Override
+    public RegPolygon clone() {
+        RegPolygon r = new RegPolygon(this.originX, this.originY, this.npoints);
+        r.xpoints = this.xpoints.clone();
+        r.ypoints = this.ypoints.clone();
+        return r;
+    }
+    
+    @Override
+    public void setPosition(int x, int y) {
+        int[] newx = new int[this.npoints];
+        int[] newy = new int[this.npoints];
+        
+        for (int i = 0; i < this.npoints; ++i) {
+            newx[i] = this.xpoints[i] + x;
+            newy[i] = this.ypoints[i] + y;
+        }
+        
+        this.xpoints = newx;
+        this.ypoints = newy;
+    }
 }
+

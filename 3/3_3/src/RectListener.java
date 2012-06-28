@@ -17,10 +17,10 @@ public class RectListener extends MotionListener implements ActionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        super.mousePressed(e);
         current = new MyRectangle(e.getX(), e.getY());
         ShapeWithContext s = new ShapeWithContext(current);
         s.setWithShade(mf.shadow.getState());
-        //current = new MyRectangle.Builder(e.getX(), e.getY()).shadow(mf.shadow.getState()).size(1, 1).build();
         mf.canvas.med.shapes.add(s);
     }
 

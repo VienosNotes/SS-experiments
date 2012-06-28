@@ -21,9 +21,22 @@ public class PolyListener extends MotionListener implements ActionListener {
     @Override
     public void mousePressed(MouseEvent e) {
         current = new RegPolygon(e.getX(), e.getY(), vertex);
-        mf.canvas.med.shapes.add(new ShapeWithContext(current));
+        ShapeWithContext s = new ShapeWithContext(current);
+        s.setWithShade(mf.shadow.getState());
+        mf.canvas.med.shapes.add(s);
+
+    }
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        try {
+            current.setSize(-current.getOriginX() + e.getX(), -current.getOriginY() + e.getY());
+
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        mf.canvas.repaint();
     }
 
 
 
-    }
+}

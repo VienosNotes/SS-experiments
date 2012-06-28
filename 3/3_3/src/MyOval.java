@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,60 +8,48 @@ import java.awt.*;
  * Time: 17:47
  * To change this template use File | Settings | File Templates.
  */
-public class MyOval extends MyDrawing {
-     public MyOval(int x, int y){
-        super();
-        this.setLocation(x, y);
+public class MyOval extends Ellipse2D.Double implements ResizableShape {
+    public final int originX;
+    public final int originY;
+
+    public MyOval(int x, int y){
+        super(x, y, 0, 0);
+        originX = x;
+        originY = y;
+        System.out.println("called");
     }
 
-    public static class Builder extends MyDrawing.Builder {
-        public Builder(int x, int y) {
-            super(x, y);
+    public void setSize(int w, int h) {
+        System.out.printf("%d,%d%n", w, h);
+        if (w >= 0 && h >= 0) {
+            this.setBounds(this.getOriginX(), this.getOriginY(), w, h);
+        } else if (w < 0 && h > 0) {
+            this.setBounds(this.getOriginX() + w, this.getOriginY(), -w, h);
+        } else if (w > 0 && h < 0) {
+            this.setBounds((int)this.getX(), this.getOriginY() + h, w, -h);
+        } else {
+            this.setBounds(this.getOriginX() + w, this.getOriginY() + h, -w, -h);
         }
-
-        public MyOval build() {
-            return new MyOval(this);
-        }
-
     }
 
     @Override
-    public void drawShape(Graphics g) {
-        int x = getX();
-        int y = getY();
-        int w = getW();
-        int h = getH();
-
-        if (w < 0) {
-            x += w;
-            w *= -1;
-        }
-
-        if (h < 0) {
-            y += h;
-            h *= -1;
-        }
-
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(this.getLineWidth()));
-        g2.setColor(this.getFillColor());
-        g2.fillOval(x, y, w, h);
-        g2.setColor(this.getLineColor());
-        g2.drawOval(x, y, w, h);
+    public void setPosition(int x, int y) {
+        this.x += x;
+        this.y += y;
     }
 
-    @Override
-    public String toString() {
-        return "Oval:" + x + y + w + h;
+    public int getOriginX() {
+        return originX;
     }
 
-    protected MyOval(Builder b) {
-        super(b);
+    public int getOriginY() {
+        return originY;
     }
 
-    @Override
-    public MyOval clone() {
-        MyOval c = (MyOval) new Builder(x,y).size(w,h).fillColor(fillColor).lineColor(lineColor).lineWidth(lineWidth).build();
-        return c;
+    public void setBounds(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 }

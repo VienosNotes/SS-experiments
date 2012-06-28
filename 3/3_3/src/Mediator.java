@@ -40,4 +40,30 @@ public class Mediator {
     public void foreFront () {
         shapes.add(0, shapes.remove(shapes.indexOf(selected)));
     }
+
+    public void drawAll (Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        for(ShapeWithContext d : shapes) {
+            ShapeWithContext.Context ctx = d.getCtx();
+            if (ctx == null) {
+                System.out.println("ctx is null!");
+                return;
+            }
+
+            if (d.isWithShade()) {
+                ResizableShape shadow = d.shapeClone();
+                shadow.setPosition(10,10);
+                g2.setColor(Color.BLACK);
+                g2.fill(shadow);
+            }
+
+            g2.setColor(ctx.getFillColor());
+            g2.fill(d.shape);
+            g2.setColor(ctx.getLineColor());
+            g2.setStroke(ctx.getStroke());
+            g2.draw(d.shape);
+
+        }
+    }
 }

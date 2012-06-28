@@ -14,24 +14,26 @@ public class MotionListener extends MouseAdapter implements MouseMotionListener,
     protected final MainForm mf;
     protected ResizableShape current;
     protected Boolean shadow;
+    private int beforeX;
+    private int beforeY;
 
     public MotionListener(MainForm mf) {
         this.mf = mf;
     }
-
+                    
     @Override
     public void mousePressed(MouseEvent e) {
-
+        beforeX = e.getX();
+        beforeY = e.getY();
         mf.canvas.repaint();
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         try {
-            current.setSize((int)-current.getX() + e.getX(),  (int)-current.getY() + e.getY());
+            current.setSize(e.getX() - beforeX, e.getY() - beforeY);
         } catch(Exception ex) {
-//            System.out.println(current.toString() + ex + " with Dragged");
-            System.out.println("something is wrong");
+            ex.printStackTrace();
         }
         mf.canvas.repaint();
     }
