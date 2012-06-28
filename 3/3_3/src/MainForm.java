@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,7 +15,7 @@ public class MainForm extends JFrame {
 
     public MainForm() {
         super("My Painter");
-        MotionListener listener = new RectListener(this);
+        DrawListener listener = new RectListener(this);
 
         JPanel jp = new JPanel(new BorderLayout());
 
@@ -41,6 +40,10 @@ public class MainForm extends JFrame {
         Button decaButton = new Button("Deca");
         decaButton.addActionListener(new PolyListener(this, 10));
         buttonPanel.add(decaButton);
+        
+        Button selectButton = new Button("Select");
+        selectButton.addActionListener(new SelectListener(this));
+        buttonPanel.add(selectButton);
 
         JPanel checkPanel = new JPanel(new FlowLayout());
         shadow = new Checkbox("shadow");

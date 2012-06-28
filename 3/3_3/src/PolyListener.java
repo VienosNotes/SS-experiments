@@ -1,6 +1,5 @@
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +9,7 @@ import java.awt.geom.Ellipse2D;
  * To change this template use File | Settings | File Templates.
  */
 
-public class PolyListener extends MotionListener implements ActionListener {
+public class PolyListener extends DrawListener implements ActionListener {
     private final int vertex;
     public PolyListener(MainForm mf, int vertex) {
         super(mf);

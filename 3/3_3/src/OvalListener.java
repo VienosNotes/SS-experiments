@@ -1,5 +1,3 @@
-import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
-
 import java.awt.event.MouseEvent;
 
 /**
@@ -9,7 +7,7 @@ import java.awt.event.MouseEvent;
  * Time: 12:02
  * To change this template use File | Settings | File Templates.
  */
-public class OvalListener extends MotionListener {
+public class OvalListener extends DrawListener {
     public OvalListener(MainForm mf) {
         super(mf);
     }

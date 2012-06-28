@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 
 /**
@@ -20,13 +21,21 @@ public class Mediator {
      * @param y y-coordinate
      */
     public void select (int x, int y) {
+        selected = null;
         for (ShapeWithContext s: shapes) {
-            if (s.getShape().contains(x, y)) {
+            s.setSelected(false);
+        }
+        
+        for (ShapeWithContext s: shapes) {
+            if (new Area(s.getShape()).contains(x, y)) {
+                System.out.println("selected!");
                 s.setSelected(true);
                 selected = s;
-                return;
+                //return;
             }
         }
+
+
     }
 
     /**
@@ -43,6 +52,7 @@ public class Mediator {
 
     public void drawAll (Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
+        Rectangle bound = null;
 
         for(ShapeWithContext d : shapes) {
             ShapeWithContext.Context ctx = d.getCtx();
@@ -57,6 +67,10 @@ public class Mediator {
                 g2.setColor(Color.BLACK);
                 g2.fill(shadow);
             }
+            
+            if (d.isSelected()) {
+                bound = new Area(d.shape).getBounds();
+            }
 
             g2.setColor(ctx.getFillColor());
             g2.fill(d.shape);
@@ -64,6 +78,11 @@ public class Mediator {
             g2.setStroke(ctx.getStroke());
             g2.draw(d.shape);
 
+        }
+
+        if (selected != null) {
+            g2.setColor(Color.RED);
+            g2.draw(bound);
         }
     }
 }

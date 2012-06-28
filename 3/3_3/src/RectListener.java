@@ -1,4 +1,3 @@
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
@@ -9,7 +8,7 @@ import java.awt.event.MouseEvent;
  * Time: 11:58
  * To change this template use File | Settings | File Templates.
  */
-public class RectListener extends MotionListener implements ActionListener {
+public class RectListener extends DrawListener implements ActionListener {
     public RectListener(MainForm mf) {
         super(mf);
     }
