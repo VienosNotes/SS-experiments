@@ -88,6 +88,7 @@ public class Mediator {
 
         if (selected != null) {
             g2.setColor(Color.RED);
+            g2.setStroke(new BasicStroke());
             g2.draw(bound);
         }
     }

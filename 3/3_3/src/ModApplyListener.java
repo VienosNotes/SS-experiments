@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,6 +24,9 @@ public class ModApplyListener implements ActionListener{
         ctx.setFillColor(m.fillColor);
         System.out.println(m.fillColor);
         ctx.setLineColor(m.lineColor);
+        ctx.setLineWidth(new Integer(m.lineWidth.getText()));
+        ctx.setStroke(new BasicStroke(ctx.getLineWidth()));
+        s.setWithShade(m.shadow.getState());
         m.mf.canvas.repaint();
     }
 }

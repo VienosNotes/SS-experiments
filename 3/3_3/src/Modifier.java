@@ -19,6 +19,8 @@ public class Modifier extends JFrame {
     public Color fillColor;
     public BasicStroke bs;
     public MainForm mf;
+    public JTextPane lineWidth;
+    public Checkbox shadow = new Checkbox("Shadow");
 
     class ModifyWindowListener extends WindowAdapter {
         public MainForm mf;
@@ -37,6 +39,8 @@ public class Modifier extends JFrame {
         this.mf = mf;
         this.lineColor = mf.canvas.med.getSelectedShape().getCtx().getLineColor();
         this.fillColor = mf.canvas.med.getSelectedShape().getCtx().getFillColor();
+        this.lineWidth = new JTextPane();
+        lineWidth.setText("" + mf.canvas.med.getSelectedShape().getCtx().getLineWidth());
 
         JPanel jp = new JPanel(new BorderLayout());
         getContentPane().add(jp);
@@ -59,18 +63,24 @@ public class Modifier extends JFrame {
         fillColorModify.add(fcLabel);
 
         JPanel opButton = new JPanel();
-        Button okButton = new Button("OK");
-        okButton.addActionListener(new ModApplyListener(this));
+        Button applyButton = new Button("Apply");
+        applyButton.addActionListener(new ModApplyListener(this));
 
-        Button cancelButton = new Button("Cancel");
-        opButton.add(okButton);  
-        opButton.add(cancelButton);
+        opButton.add(applyButton);
 
         JPanel color = new JPanel(new BorderLayout());
         color.add(BorderLayout.NORTH, lineColorModify);
         color.add(BorderLayout.CENTER, fillColorModify);
 
+        JPanel widthPanel = new JPanel();
+        widthPanel.add(new JLabel("Line Width: "));
+        widthPanel.add(BorderLayout.NORTH, lineWidth);
+
+        shadow.setState(mf.canvas.med.getSelectedShape().isWithShade());
+        widthPanel.add(BorderLayout.SOUTH, shadow);
+        
         jp.add(BorderLayout.NORTH, color);
+        jp.add(BorderLayout.CENTER, widthPanel);
         jp.add(BorderLayout.SOUTH, opButton);
 
         setSize(new Dimension(320, 240));
