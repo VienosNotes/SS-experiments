@@ -45,14 +45,26 @@ public class MainForm extends JFrame {
         selectButton.addActionListener(new SelectListener(this));
         buttonPanel.add(selectButton);
 
-        JPanel checkPanel = new JPanel(new FlowLayout());
+        JPanel underPanel = new JPanel(new FlowLayout());
         shadow = new Checkbox("shadow");
-        checkPanel.add(shadow);
+        underPanel.add(shadow);
         shadow.setVisible(true);
+        
+        Button copyButton = new Button("Copy");
+        copyButton.addActionListener(new CopyListener(this));
+        underPanel.add(copyButton);
+        
+        Button cutButton = new Button("Cut");
+        cutButton.addActionListener(new CutListener(this));
+        underPanel.add(cutButton);
+        
+        Button pasteButton = new Button("Paste");
+        pasteButton.addActionListener(new PasteListener(this));
+        underPanel.add(pasteButton);
 
         jp.add(BorderLayout.NORTH, buttonPanel);
         jp.add(BorderLayout.CENTER, canvas);
-        jp.add(BorderLayout.SOUTH, checkPanel);
+        jp.add(BorderLayout.SOUTH, underPanel);
         setSize(new Dimension(480, 360));
         setVisible(true);
         this.repaint();

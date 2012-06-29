@@ -15,6 +15,8 @@ public class Mediator {
     private Color c;
     private ShapeWithContext selected;
 
+    private ShapeWithContext clipBoard;
+
     /**
      * Select the shape top of the coordinate
      * @param x x-coordinate
@@ -88,5 +90,30 @@ public class Mediator {
             g2.setColor(Color.RED);
             g2.draw(bound);
         }
+    }
+
+    public void cut () {
+        if (selected == null) {
+            return;
+        }
+        clipBoard = selected.clone();
+        shapes.remove(selected);
+        selected = null;
+
+    }
+
+    public void copy () {
+        if (selected == null) {
+            return;
+        }
+        clipBoard = selected.clone();
+    }
+    
+    public void paste () {
+        if (clipBoard == null) {
+            return;
+        }
+        clipBoard.shape.setPosition(5,5);
+        shapes.add(clipBoard.clone());
     }
 }

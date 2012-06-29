@@ -15,12 +15,12 @@ public class ShapeWithContext {
     private boolean selected;
 
     public class Context {
-        private Stroke st = new BasicStroke();
+        private BasicStroke st = new BasicStroke();
         private Color lineColor = Color.BLACK;
         private Color fillColor = Color.WHITE;
         private int lineWidth = 1;
 
-        public Stroke getStroke() {
+        public BasicStroke getStroke() {
             if (st == null) {
                 st = new BasicStroke(lineWidth);
             }
@@ -28,7 +28,7 @@ public class ShapeWithContext {
             return st;
         }
 
-        public void setStroke(Stroke st) {
+        public void setStroke(BasicStroke st) {
             this.st = st;
         }
 
@@ -54,6 +54,15 @@ public class ShapeWithContext {
 
         public void setLineWidth(int lineWidth) {
             this.lineWidth = lineWidth;
+        }
+
+        @Override
+        public Context clone() {
+            Context c = new Context();
+            BasicStroke st = this.getStroke();
+            c.setStroke(new BasicStroke(st.getLineWidth(), st.getEndCap(),  st.getLineJoin(),
+                    st.getMiterLimit(), st.getDashArray(),st.getDashPhase()));
+            return c;
         }
     }
 
@@ -106,6 +115,15 @@ public class ShapeWithContext {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public ShapeWithContext clone () {
+        ShapeWithContext s = new ShapeWithContext(this.shapeClone());
+        Context c = ctx.clone();
+        s.withShade = withShade;
+        s.selected = selected;
+        return s;
     }
 
 }
