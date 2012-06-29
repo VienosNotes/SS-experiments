@@ -20,7 +20,11 @@ public class SelectListener extends MouseAdapter implements MouseMotionListener,
     @Override
     public void mousePressed(MouseEvent e) {
         mf.canvas.med.select(e.getX(), e.getY());
-        current = mf.canvas.med.getSelectedShape();
+        if (mf.canvas.med.getSelectedShape() != null) {
+            current = mf.canvas.med.getSelectedShape().shape;
+        } else{
+            current = null;
+        }
         beforeX = e.getX();
         beforeY = e.getY();
         mf.canvas.repaint();

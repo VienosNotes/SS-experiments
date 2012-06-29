@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,6 +14,7 @@ public class MainForm extends JFrame {
 
     public MyCanvas canvas = new MyCanvas(this);
     public Checkbox shadow;
+    public Modifier mod;
 
     public MainForm() {
         super("My Painter");
@@ -24,26 +27,26 @@ public class MainForm extends JFrame {
         canvas.addMouseMotionListener(listener);
         canvas.addMouseListener(listener);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout());
+        JPanel modePanel = new JPanel(new FlowLayout());
         Button rectButton = new Button("Rectangle");
         rectButton.addActionListener(new RectListener(this));
-        buttonPanel.add(rectButton);
+        modePanel.add(rectButton);
 
         Button ovalButton = new Button("Oval");
         ovalButton.addActionListener(new OvalListener(this));
-        buttonPanel.add(ovalButton);
+        modePanel.add(ovalButton);
 
         Button heptButton = new Button("Hept");
         heptButton.addActionListener(new PolyListener(this, 7));
-        buttonPanel.add(heptButton);
+        modePanel.add(heptButton);
 
         Button decaButton = new Button("Deca");
         decaButton.addActionListener(new PolyListener(this, 10));
-        buttonPanel.add(decaButton);
+        modePanel.add(decaButton);
         
         Button selectButton = new Button("Select");
         selectButton.addActionListener(new SelectListener(this));
-        buttonPanel.add(selectButton);
+        modePanel.add(selectButton);
 
         JPanel underPanel = new JPanel(new FlowLayout());
         shadow = new Checkbox("shadow");
@@ -61,13 +64,28 @@ public class MainForm extends JFrame {
         Button pasteButton = new Button("Paste");
         pasteButton.addActionListener(new PasteListener(this));
         underPanel.add(pasteButton);
+        
+        Button deleteButton = new Button("delete");
+        deleteButton.addActionListener(new DeleteListener(this));
+        underPanel.add(deleteButton);
+        
+        Button modifyButton = new Button("Modify");
+        modifyButton.addActionListener(new ModifyListener(this));
+        underPanel.add(modifyButton);
 
-        jp.add(BorderLayout.NORTH, buttonPanel);
+        jp.add(BorderLayout.NORTH, modePanel);
         jp.add(BorderLayout.CENTER, canvas);
         jp.add(BorderLayout.SOUTH, underPanel);
         setSize(new Dimension(480, 360));
         setVisible(true);
         this.repaint();
+
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e)  {
+                System.exit(0);
+            }
+        });
     }
 
     public static void main (String[] args) {

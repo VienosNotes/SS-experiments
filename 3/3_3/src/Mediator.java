@@ -44,9 +44,9 @@ public class Mediator {
      * return the shape selected now
      * @return selected Shape object
      */
-    public ResizableShape getSelectedShape () {
+    public ShapeWithContext getSelectedShape () {
         if (selected != null) {
-            return selected.getShape();
+            return selected;
         } else {
             return null;
         }
@@ -115,5 +115,13 @@ public class Mediator {
         }
         clipBoard.shape.setPosition(5,5);
         shapes.add(clipBoard.clone());
+    }
+    
+    public void delete () {
+        if (selected == null) {
+            return;
+        }
+        shapes.remove(selected);
+        selected = null;
     }
 }
