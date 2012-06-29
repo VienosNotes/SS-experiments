@@ -42,8 +42,12 @@ public class Mediator {
      * return the shape selected now
      * @return selected Shape object
      */
-    public Shape getSelectedShape () {
-        return selected.getShape();
+    public ResizableShape getSelectedShape () {
+        if (selected != null) {
+            return selected.getShape();
+        } else {
+            return null;
+        }
     }
 
     public void foreFront () {
